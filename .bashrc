@@ -1,37 +1,40 @@
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+[[ $- != *i* ]] && return
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-[[ $DISPLAY ]] && shopt -s checkwinsize
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
 
-# History {{{
-shopt -s histappend
+# Bash configuration
 HISTCONTROL=ignoreboth:erasedups
+shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
-# }}}
-# Prompt {{{
-export PS1="\[\e[1;32m\][\w] \[\e[0m\]"
-# }}}
-# Default editor {{{
-export EDITOR=nvim
-# }}}
-# Aliases {{{
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-alias ll='ls -Al'
+shopt -s checkwinsize
+
+alias ls='ls --color=auto --group-directories-first'
 alias la='ls -A'
-alias tmux='tmux -f ~/.config/tmux/config'
-# }}}
+alias grep='grep --color=auto'
+alias v=nvim
+alias vim=nvim
 
-# RISC-V {{{
-export RISCV=/opt/riscv
-export HOL=/home/hak/Sources/HOL
-export PATH=$HOL/bin:$RISCV/bin:$PATH
-# }}}
+export PS1='\[\033[1;32m\]\u@\h:\[\033[1;34m\]\w\[\033[0m\]\$ '
+export EDITOR=nvim
 
-export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+pathadd() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        PATH="$1${PATH:+":$PATH"}"
+    fi
+}
+
+pathadd "$HOME/.local/bin"
+
+if [ -d "$HOME/.local/src/hol4" ]; then
+	export HOLDIR="$HOME/.local/src/hol4"
+fi
+
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
+export GPG_TTY=$(tty)
 
-source /etc/bash_completion
+export DOCKER_HOST=unix:///run/user/1000/docker.sock
+

@@ -1,2 +1,3 @@
 --ignore .git
 --ignore .stowrc
+--no-folding

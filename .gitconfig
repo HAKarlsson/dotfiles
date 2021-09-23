@@ -1,7 +1,16 @@
-[user]
-	email = hakarlsson@mailbox.org
-	name = Henrik Karlsson
-[core]
-	excludesFile = ~/.gitignore_global
 [init]
-	defaultBranch = master
+	defaultBranch = main
+[user]
+	email = hakarlsson@proton.me
+	name = Henrik Karlsson
+	signingkey = 5286B25FE71D4EFB
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[push]
+	default = current
+[pull]
+	rebase = true
+[core]
+	excludesFile = ~/.global_gitignore
