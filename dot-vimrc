@@ -1,0 +1,101 @@
+" ====================================================================
+" GENERAL & UI SETTINGS
+" ====================================================================
+let mapleader = ' '
+
+syntax on
+filetype plugin indent on
+colorscheme wildcharm
+
+set termguicolors
+set background=dark
+set number
+set mouse=a
+set signcolumn=no
+set shortmess+=I
+
+
+" ====================================================================
+" PLUGINS
+" ====================================================================
+call plug#begin()
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'preservim/nerdtree'
+call plug#end()
+
+
+" ====================================================================
+" INDENTATION & FORMATTING
+" ====================================================================
+set tabstop=4 shiftwidth=4 softtabstop=4
+set smartindent expandtab shiftround smarttab
+
+
+" ====================================================================
+" SEARCH CONFIGURATION
+" ====================================================================
+set incsearch hlsearch
+set ignorecase smartcase
+
+
+" ====================================================================
+" FILE MANAGEMENT & PERSISTENCE
+" ====================================================================
+set noswapfile nobackup nowritebackup
+set undodir=~/.vim/undodir
+set undofile
+
+
+" ====================================================================
+" KEYBINDINGS
+" ====================================================================
+
+" Normal Mode Window Navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Terminal Mode Window Navigation
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
+
+" Clear search highlighting
+nnoremap <silent> <Esc> :nohlsearch<CR>
+
+" FZF Navigation
+nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>b :Buffers<CR>
+
+" NERDTree
+noremap <Leader><Leader> :NERDTreeToggle<CR>
+
+" Built-In Terminal
+nnoremap <Leader>t :botright vertical terminal<CR>
+tnoremap <Esc> <C-\><C-n>
+
+" System Clipboard Integration
+xnoremap <Leader>y "+y
+nnoremap <Leader>y "+yy
+nnoremap <Leader>p "+p
+vnoremap <Leader>p "+p
+
+
+" ====================================================================
+" AUTOCOMMANDS
+" ====================================================================
+augroup VimCustomConfig
+    autocmd!
+
+    " Restore cursor position when opening files
+    autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+    " Clean up trailing whitespaces automatically on save
+    autocmd BufWritePre * keepjumps %s/\s\+$//e
+
+    " Automatically hide a closed terminal buffer
+    autocmd TerminalOpen * setlocal bufhidden=hide
+augroup END

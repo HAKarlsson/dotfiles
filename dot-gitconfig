@@ -1,0 +1,19 @@
+[init]
+	defaultBranch = main
+[user]
+	email = hakarlsson@proton.me
+	name = Henrik Karlsson
+	signingkey = 70CF6A6A4E87A853
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[push]
+	default = current
+[pull]
+	rebase = true
+[core]
+	excludesFile = ~/.global_gitignore
+[advice]
+	detachHead = false
+	detachedHead = false
