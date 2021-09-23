@@ -1,0 +1,7 @@
+[user]
+	email = hakarlsson@mailbox.org
+	name = Henrik Karlsson
+[core]
+	excludesFile = ~/.gitignore_global
+[init]
+	defaultBranch = master
