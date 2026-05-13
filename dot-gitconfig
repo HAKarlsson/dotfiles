@@ -3,7 +3,7 @@
 [user]
 	email = hakarlsson@proton.me
 	name = Henrik Karlsson
-	signingkey = 5286B25FE71D4EFB
+	signingkey = A23D0CADF6FCB666
 [commit]
 	gpgsign = true
 [tag]
