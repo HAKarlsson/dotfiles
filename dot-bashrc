@@ -14,11 +14,10 @@ shopt -s checkwinsize
 alias ls='ls --color=auto --group-directories-first'
 alias la='ls -A'
 alias grep='grep --color=auto'
-alias v=nvim
-alias vim=nvim
+alias v=vim
 
 export PS1='\[\033[1;32m\]\u@\h:\[\033[1;34m\]\w\[\033[0m\]\$ '
-export EDITOR=nvim
+export EDITOR=vim
 
 pathadd() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then

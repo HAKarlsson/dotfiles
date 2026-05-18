@@ -3,11 +3,12 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
+(add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-12"))
+(setq make-backup-files nil)
 
 ;;; --- Package Management ---
 (require 'package)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+(setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")))
 
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
@@ -17,8 +18,6 @@
   (package-refresh-contents))
 
 ;; Ensure use-package is installed
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t) ; Removes the need for :ensure t on every block
 
@@ -39,20 +38,15 @@
   :config
   (evil-mode 1))
 
-;; Highly recommended for better Vim-like behavior in other buffers
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
+(let ((holpath (concat (getenv "HOLDIR") "/tools/editor-modes/emacs/hol-mode.el")))
+  (if (file-exists-p holpath)
+      (load holpath)
+    (message "HOL mode not found")))
 
-(use-package projectile
-  :init
-  (projectile-mode +1)
-  :bind-keymap
-  ("C-c p" . projectile-command-map))
-
-
-(load "/home/hak/PARA/Area/HOL/tools/editor-modes/emacs/hol-mode.el")
+(eval-after-load "quail"
+  (progn
+    (define-key quail-translation-keymap (kbd "TAB") 'nil)
+    (define-key quail-translation-keymap [tab] 'nil)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
