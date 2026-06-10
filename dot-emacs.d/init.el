@@ -5,6 +5,8 @@
 (scroll-bar-mode -1)
 (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-12"))
 (setq make-backup-files nil)
+(setq auto-save-default nil)
+(setq create-lockfiles nil)
 
 ;;; --- Package Management ---
 (require 'package)
@@ -42,6 +44,28 @@
   (if (file-exists-p holpath)
       (load holpath)
     (message "HOL mode not found")))
+
+(use-package auctex
+  :ensure t
+  :defer t
+  :mode ("\\.tex\\'" . latex-mode)
+  :init
+  ;; Use pdf-tools or system PDF viewer instead of dvi
+  (setq TeX-PDF-mode t)
+  :config
+  ;; Parse the document to enable smart completions and wizardry
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  
+  ;; Make Emacs prompt you for a master file if working on multi-file documents
+  (setq-default TeX-master nil)
+
+  ;; Enable RefTeX for citations and table of contents
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (setq reftex-plug-into-AUCTeX t)
+
+  ;; Enable math support (makes typing LaTeX symbols easier)
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode))
 
 (eval-after-load "quail"
   (progn
