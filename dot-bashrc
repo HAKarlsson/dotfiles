@@ -34,4 +34,6 @@ gpg-connect-agent updatestartuptty /bye > /dev/null
 
 export DOCKER_HOST=unix:///run/user/1000/docker.sock
 
-. /etc/bash_completion
+if [ -d "/etc/bash_completion" ]; then
+	. /etc/bash_completion
+fi
