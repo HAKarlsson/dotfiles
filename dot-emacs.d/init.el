@@ -4,6 +4,9 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-12"))
+(load-theme 'modus-operandi t)
+
+;;; --- File Backups & Safety ---
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq create-lockfiles nil)
@@ -40,13 +43,13 @@
   :config
   (evil-mode 1))
 
-(let ((holpath (concat (getenv "HOLDIR") "/tools/editor-modes/emacs/hol-mode.el")))
-  (if (file-exists-p holpath)
-      (load holpath)
-    (message "HOL mode not found")))
+;; Clean integration for evil-collection
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
 
 (use-package auctex
-  :ensure t
   :defer t
   :mode ("\\.tex\\'" . latex-mode)
   :init
@@ -67,20 +70,21 @@
   ;; Enable math support (makes typing LaTeX symbols easier)
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode))
 
+;; HOL4 hol-mode
+(let ((holpath (concat (getenv "HOLDIR") "/tools/editor-modes/emacs/hol-mode.el")))
+  (if (file-exists-p holpath)
+      (load holpath)
+    (message "HOL mode not found")))
+
+
+;; Quail Keymap Adjustments
 (eval-after-load "quail"
   (progn
     (define-key quail-translation-keymap (kbd "TAB") 'nil)
     (define-key quail-translation-keymap [tab] 'nil)))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;; --- Keep Init File Clean ---
+;; Redirect the automatic custom-set-variables blocks to a separate file entirely
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
