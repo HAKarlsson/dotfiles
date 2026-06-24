@@ -5,15 +5,20 @@
 (scroll-bar-mode -1)
 (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-12"))
 (load-theme 'modus-operandi t)
+(setq display-line-numbers-type 'relative)
+
 
 ;;; --- File Backups & Safety ---
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq create-lockfiles nil)
 
+
 ;;; --- Package Management ---
 (require 'package)
-(setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")))
+(setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
+			 ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+
 
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
@@ -49,6 +54,10 @@
   :config
   (evil-collection-init))
 
+(use-package magit
+  :bind (("C-x g" . magit-status)
+         ("C-x M-g" . magit-dispatch)))
+
 (use-package auctex
   :defer t
   :mode ("\\.tex\\'" . latex-mode)
@@ -76,7 +85,6 @@
       (load holpath)
     (message "HOL mode not found")))
 
-
 ;; Quail Keymap Adjustments
 (eval-after-load "quail"
   (progn
@@ -88,3 +96,16 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-vc-selected-packages
+   '((minuet :url "https://github.com/milanglacier/minuet-ai.el"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
