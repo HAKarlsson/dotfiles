@@ -1,8 +1,10 @@
- ;;; --- UI & Performance ---
+;;; --- UI & Performance ---
 (setq inhibit-startup-message t)
-(tool-bar-mode -1)
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
 (menu-bar-mode -1)
-(scroll-bar-mode -1)
+(when (fboundp 'scroll-bar-mode)
+  (scroll-bar-mode -1))
 (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-12"))
 (load-theme 'modus-operandi t)
 (setq display-line-numbers-type 'relative)
@@ -24,11 +26,11 @@
 (unless (bound-and-true-p package--initialized)
   (package-initialize))
 
-;; Only refresh if we don't have a local cache (speeds up startup)
-(unless package-archive-contents
-  (package-refresh-contents))
-
-;; Ensure use-package is installed
+;; Emacs versions before 29 do not bundle use-package.
+(unless (require 'use-package nil t)
+  (unless package-archive-contents
+    (package-refresh-contents))
+  (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t) ; Removes the need for :ensure t on every block
 
@@ -59,9 +61,10 @@
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch)))
 
-(use-package auctex
+(use-package tex
+  :ensure auctex
   :defer t
-  :mode ("\\.tex\\'" . latex-mode)
+  :mode ("\\.tex\\'" . LaTeX-mode)
   :init
   ;; Use pdf-tools or system PDF viewer instead of dvi
   (setq TeX-PDF-mode t)
@@ -69,7 +72,7 @@
   ;; Parse the document to enable smart completions and wizardry
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
-  
+
   ;; Make Emacs prompt you for a master file if working on multi-file documents
   (setq-default TeX-master nil)
 
@@ -81,21 +84,18 @@
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode))
 
 ;; HOL4 hol-mode
-(let ((holpath (concat (getenv "HOLDIR") "/tools/editor-modes/emacs/hol-mode.el")))
-  (if (file-exists-p holpath)
-      (load holpath)
-    (message "HOL mode not found")))
-
-(let ((holpath (concat (getenv "HOLDIR") "/tools/editor-modes/emacs/hol-unicode.el")))
-  (if (file-exists-p holpath)
-      (load holpath)
-    (message "HOL unicode not found")))
+(when-let ((holdir (getenv "HOLDIR")))
+  (dolist (mode '("hol-mode.el" "hol-unicode.el"))
+    (let ((holpath (expand-file-name (concat "tools/editor-modes/emacs/" mode)
+                                     holdir)))
+      (if (file-readable-p holpath)
+          (load holpath)
+        (display-warning 'hol (concat "HOL mode not found: " holpath))))))
 
 ;; Quail Keymap Adjustments
-(eval-after-load "quail"
-  (progn
-    (define-key quail-translation-keymap (kbd "TAB") 'nil)
-    (define-key quail-translation-keymap [tab] 'nil)))
+(with-eval-after-load 'quail
+  (define-key quail-translation-keymap (kbd "TAB") nil)
+  (define-key quail-translation-keymap [tab] nil))
 
 ;;; --- Keep Init File Clean ---
 ;; Redirect the automatic custom-set-variables blocks to a separate file entirely

@@ -15,28 +15,46 @@ shopt -s checkwinsize
 alias ls='ls --color=auto --group-directories-first'
 alias la='ls -A'
 alias grep='grep --color=auto'
-alias v=vim
 
 # Prompt
 export PS1='\[\033[1;32m\]\u@\h:\[\033[1;34m\]\w\[\033[0m\]\$ '
 
 # Default editor
-export EDITOR=vim
+if command -v vim >/dev/null 2>&1; then
+    alias v=vim
+    export EDITOR=vim
+fi
 
 # GPG / SSH
-export GPG_TTY=$(tty)
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpgconf --launch gpg-agent
-gpg-connect-agent updatestartuptty /bye > /dev/null
+if command -v gpgconf >/dev/null 2>&1; then
+    if [[ -t 0 ]]; then
+        GPG_TTY=$(tty)
+        export GPG_TTY
+    fi
+    if [[ -z ${SSH_AUTH_SOCK:-} ]]; then
+        if SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket); then
+            export SSH_AUTH_SOCK
+            gpgconf --launch gpg-agent
+        fi
+    fi
+    if [[ -t 0 ]] && command -v gpg-connect-agent >/dev/null 2>&1; then
+        gpg-connect-agent updatestartuptty /bye > /dev/null
+    fi
+fi
 
 # Docker settings
-export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
-
+if [[ -z ${DOCKER_HOST:-} && -z ${DOCKER_CONTEXT:-} ]]; then
+    if [[ -S "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/docker.sock" ]]; then
+        export DOCKER_HOST="unix://${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/docker.sock"
+    fi
+fi
 
 # BEGIN opam configuration
 # This is useful if you're using opam as it adds:
 #   - the correct directories to the PATH
 #   - auto-completion for the opam binary
 # This section can be safely removed at any time if needed.
-test -r '/home/hak/.opam/opam-init/init.sh' && . '/home/hak/.opam/opam-init/init.sh' > /dev/null 2> /dev/null || true
+if [[ -r "$HOME/.opam/opam-init/init.sh" ]]; then
+    . "$HOME/.opam/opam-init/init.sh"
+fi
 # END opam configuration

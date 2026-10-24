@@ -3,7 +3,7 @@
 [user]
 	email = hakarlsson@proton.me
 	name = Henrik Karlsson
-	signingkey = /home/hak/.ssh/id_ed25519.pub
+	signingkey = ~/.ssh/id_ed25519.pub
 #	signingkey = 70CF6A6A4E87A853
 [commit]
 	gpgsign = true
