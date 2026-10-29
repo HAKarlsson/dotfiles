@@ -44,6 +44,9 @@ set ignorecase smartcase
 " ====================================================================
 set noswapfile nobackup nowritebackup
 set undodir=~/.vim/undodir
+if !isdirectory(expand(&undodir))
+    call mkdir(expand(&undodir), 'p', 0700)
+endif
 set undofile
 
 
