@@ -3,10 +3,7 @@ set -euo pipefail
 
 dotfiles_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
-if ! command -v gpg >/dev/null 2>&1; then
-    printf 'GnuPG is required. Install it with: sudo apt-get install gnupg\n' >&2
-    exit 1
-fi
+bash "$dotfiles_dir/scripts/packages.sh"
 
 link_config() {
     local source="$1"
@@ -46,7 +43,7 @@ for entry in "$dotfiles_dir"/dot-*; do
     fi
 done
 
-gnupg_home="${GNUPGHOME:-"$HOME/.gnupg"}"
-mkdir -p -- "$gnupg_home"
-chmod 700 -- "$gnupg_home"
-gpg --batch --import "$dotfiles_dir/hakarlsson@proton.me.asc"
+for script in "$dotfiles_dir"/scripts/*.sh; do
+    [[ "$script" == "$dotfiles_dir/scripts/packages.sh" ]] && continue
+    bash "$script"
+done
