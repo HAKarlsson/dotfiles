@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-dotfiles_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
 gnupg_home="${GNUPGHOME:-"$HOME/.gnupg"}"
 mkdir -p -- "$gnupg_home"
 chmod 700 -- "$gnupg_home"
-gpg --batch --import "$dotfiles_dir/hakarlsson@proton.me.asc"
+curl --fail --silent --show-error --location \
+    'https://keys.openpgp.org/vks/v1/by-keyid/95D4AD82935C1692' \
+    | gpg --batch --import
