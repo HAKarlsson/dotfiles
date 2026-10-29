@@ -22,7 +22,9 @@ your home directory. Existing files are moved to a `.backup` path; an existing
 backup is never overwritten.
 
 Application-specific setup lives in `scripts/` and runs after the dotfiles are
-linked. GnuPG setup imports the public key, and Vim setup installs vim-plug only
+linked. GnuPG setup downloads and imports the public key from
+https://keys.openpgp.org/vks/v1/by-keyid/95D4AD82935C1692, so it requires an
+internet connection. Vim setup installs vim-plug only
 when `~/.vim/autoload/plug.vim` is missing. Run `:PlugInstall` in Vim to install
 the configured plugins. Vim creates `~/.vim/undodir` with private permissions
 on startup for persistent undo.
