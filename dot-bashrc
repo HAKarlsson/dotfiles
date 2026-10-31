@@ -1,7 +1,7 @@
 [[ $- != *i* ]] && return
 
 # Bash configuration
-if [ -f /etc/profile.d/bash_completion.sh ]; then
+if [[ -r /etc/profile.d/bash_completion.sh ]]; then
     . /etc/profile.d/bash_completion.sh
 fi
 
@@ -32,12 +32,6 @@ gpg-connect-agent updatestartuptty /bye > /dev/null
 # Docker settings
 export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
 
-# BEGIN opam configuration
-# This is useful if you're using opam as it adds:
-#   - the correct directories to the PATH
-#   - auto-completion for the opam binary
-# This section can be safely removed at any time if needed.
 if [[ -r "$HOME/.opam/opam-init/init.sh" ]]; then
     . "$HOME/.opam/opam-init/init.sh"
 fi
-# END opam configuration
