@@ -5,10 +5,10 @@ let mapleader = ' '
 
 syntax on
 filetype plugin indent on
-colorscheme wildcharm
+colorscheme retrobox
 
 set termguicolors
-set background=dark
+set background=light
 set number
 set mouse=a
 set signcolumn=no
