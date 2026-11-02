@@ -3,35 +3,34 @@ size = 12.0
 
 [font.normal]
 family = 'Source Code Pro'
-
 [colors.primary]
-background = '#fbf1c7'
-foreground = '#3c3836'
+background = '#ffffff'
+foreground = '#000000'
 
 [colors.normal]
-black   = '#fbf1c7'
-red     = '#cc241d'
-green   = '#98971a'
-yellow  = '#d79921'
-blue    = '#458588'
-magenta = '#b16286'
-cyan    = '#689d6a'
-white   = '#7c6f64'
+black   = '#000000'
+red     = '#870000'
+green   = '#008700'
+yellow  = '#af5f00'
+blue    = '#005faf'
+magenta = '#870087'
+cyan    = '#008787'
+white   = '#bcbcbc'
 
 [colors.bright]
-black   = '#928374'
-red     = '#9d0006'
-green   = '#79740e'
-yellow  = '#b57614'
-blue    = '#076678'
-magenta = '#8f3f71'
-cyan    = '#427b58'
-white   = '#3c3836'
+black   = '#6c6c6c'
+red     = '#d70000'
+green   = '#00af00'
+yellow  = '#d78700'
+blue    = '#0087d7'
+magenta = '#af00af'
+cyan    = '#00afaf'
+white   = '#e4e4e4'
 
 [colors.cursor]
-text   = '#fbf1c7'
-cursor = '#3c3836'
+text   = '#ffffff'
+cursor = '#000000'
 
 [colors.selection]
-text       = '#fbf1c7'
-background = '#3c3836'
+text       = '#000000'
+background = '#afd7d7'
